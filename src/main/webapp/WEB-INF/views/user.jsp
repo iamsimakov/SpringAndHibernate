@@ -21,6 +21,7 @@
 
 <form:form action="${addAction}" commandName="user">
 <table>
+
 	<c:if test="${!empty user.name}">
 	<tr>
 		<td>
@@ -31,9 +32,10 @@
 		<td>
 			<form:input path="id" readonly="true" size="8"  disabled="true" />
 			<form:hidden path="id" />
-		</td> 
+		</td>
 	</tr>
 	</c:if>
+
 	<tr>
 		<td>
 			<form:label path="name">
@@ -75,7 +77,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="5">
+		<td colspan="2">
 			<c:if test="${!empty user.name}">
 				<input type="submit"
 					value="<spring:message text="Edit User"/>" />
