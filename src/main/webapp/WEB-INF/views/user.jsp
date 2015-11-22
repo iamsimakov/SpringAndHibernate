@@ -73,7 +73,7 @@
 			</form:label>
 		</td>
 		<td>
-			<form:input path="createDate" />
+			<form:input type="date" path="createDate" name="createDate" value=""/>
 		</td>
 	</tr>
 	<tr>
