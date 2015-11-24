@@ -7,10 +7,17 @@ import com.alex.spring.model.User;
 
 public interface UserService {
 
-	public void addUser(User p);
-	public void updateUser(User p);
-	public List<User> listUsers();
-	public User getUserById(int id);
-	public void removeUser(int id);
-	
+	void addUser(User p);
+
+	void updateUser(User p);
+
+	List<User> listUsers(Integer page);
+
+	User getUserById(int id);
+
+	void removeUser(int id);
+
+	int getSize();
+
+	List<User> findUser(String name);
 }

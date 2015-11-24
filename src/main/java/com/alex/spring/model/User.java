@@ -16,7 +16,7 @@ public class User {
     private String name;
     private int age;
     private boolean isAdmin;
-    private Date createDate;
+    private Date createdDate;
 
     public User() {
     }
@@ -53,11 +53,11 @@ public class User {
         this.isAdmin = admin;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

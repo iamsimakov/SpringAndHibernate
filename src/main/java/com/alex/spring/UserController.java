@@ -26,45 +26,43 @@ public class UserController {
 	public void setUserService(UserService ps){
 		this.userService = ps;
 	}
-	
+
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
-	public String listUsers(Model model) {
+	public String listUsers(@RequestParam(value = "page", required = false) Integer page,
+							Model model) {
+		if (page == null) page = 1;
 		model.addAttribute("user", new User());
-		model.addAttribute("listUsers", this.userService.listUsers());
+		model.addAttribute("listUsers", this.userService.listUsers(page));
+		setAttributes(model);
 		return "user";
 	}
 
-	@RequestMapping(value = "/testangular.json", method = RequestMethod.GET, produces={"application/xml", "application/json"})
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody User getUser() {
-		User user = new User();
-		user.setName("ivan");
-		user.setAge(23);
-		user.setCreateDate(new Date());
-		user.setId(100);
-		user.setIsAdmin(true);
-		return user;
+	@RequestMapping(value = "/users/find", method = RequestMethod.POST)
+	public String Search(@RequestParam(value="name", required=true) String name,
+						 Model model) {
+		model.addAttribute("user", new User());
+		model.addAttribute("listUsers", this.userService.findUser(name));
+
+		return "finduser";
 	}
 	
 	//For add and update user both
 	@RequestMapping(value= "/user/add", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute("user") User p){
-		
 		if(p.getId() == 0){
 			//new user, add it
+			p.setCreatedDate(new Date());
 			this.userService.addUser(p);
 		}else{
 			//existing user, call update
 			this.userService.updateUser(p);
 		}
-		
 		return "redirect:/users";
 		
 	}
 	
 	@RequestMapping("/remove/{id}")
     public String removeUser(@PathVariable("id") int id){
-		
         this.userService.removeUser(id);
         return "redirect:/users";
     }
@@ -72,7 +70,8 @@ public class UserController {
     @RequestMapping("/edit/{id}")
     public String editUser(@PathVariable("id") int id, Model model){
         model.addAttribute("user", this.userService.getUserById(id));
-        model.addAttribute("listUsers", this.userService.listUsers());
+        model.addAttribute("listUsers", this.userService.listUsers(1));
+		setAttributes(model);
         return "user";
     }
 
@@ -82,4 +81,14 @@ public class UserController {
 		sdf.setLenient(true);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
 	}
+
+	public void setAttributes(Model model){
+		int startpage = 1;
+		int ch = this.userService.getSize() / 10;
+		int div = this.userService.getSize() % 10;
+		int endpage = div > 0 ? ch + 1 : ch;
+		model.addAttribute("startpage", startpage);
+		model.addAttribute("endpage", endpage);
+	}
+
 }

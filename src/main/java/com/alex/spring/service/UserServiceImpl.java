@@ -32,8 +32,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public List<User> listUsers() {
-		return this.userDAO.listUsers();
+	public List<User> listUsers(Integer page) {
+		return this.userDAO.listUsers(page);
+	}
+
+	@Override
+	@Transactional
+	public int getSize(){
+		return this.userDAO.getSize();
 	}
 
 	@Override
@@ -48,4 +54,9 @@ public class UserServiceImpl implements UserService {
 		this.userDAO.removeUser(id);
 	}
 
+	@Override
+	@Transactional
+	public List<User> findUser(String name) {
+		return this.userDAO.findUser(name);
+	}
 }

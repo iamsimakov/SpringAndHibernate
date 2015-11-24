@@ -1,41 +1,11 @@
-<%--<!doctype html>
-<html ng-app>
-<head>
-	<title>Spring MVC + AngularJS Demo</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-	<script>
-		function Hello($scope, $http) {
-			$http.get('http://localhost:8080/SpringAndHibernate/testangular.json').
-					success(function(data) {
-						$scope.users = data;
-						document.write(data);
-					});
-		}
-	</script>
-</head>
-<body>
-<div ng-controller="Hello">
-	<h2>Spring MVC + AngularJS Demo</h2>
-	<p>EMail Id : {{user.emailId}}</p>
-	<p>User Name : {{user.userName}}</p>
-	<ul>
-		<li ng-repeat="user in users">
-			{{ user.name }}
-		</li>
-	</ul>
-
-</div>
-</body>
-</html>--%>
-
-
-
-
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+		 pageEncoding="UTF-8"%>
 <%@ page session="false" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<title>User Page</title>
@@ -50,12 +20,9 @@
 <h1>
 	Add a User
 </h1>
-
-<c:url var="addAction" value="/user/add" ></c:url>
-
+<c:url var="addAction" value="/user/add"/>
 <form:form action="${addAction}" commandName="user">
 <table>
-
 	<c:if test="${!empty user.name}">
 	<tr>
 		<td>
@@ -64,7 +31,7 @@
 			</form:label>
 		</td>
 		<td>
-			<form:input path="id" readonly="true" size="8"  disabled="true" />
+			<form:input path="id" readonly="true" size="16"  disabled="true" />
 			<form:hidden path="id" />
 		</td>
 	</tr>
@@ -101,16 +68,6 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
-			<form:label path="createDate">
-				<spring:message text="Date"/>
-			</form:label>
-		</td>
-		<td>
-			<form:input type="date" path="createDate" name="createDate" value=""/>
-		</td>
-	</tr>
-	<tr>
 		<td colspan="2">
 			<c:if test="${!empty user.name}">
 				<input type="submit"
@@ -125,6 +82,21 @@
 </table>	
 </form:form>
 <br>
+
+<c:url var="findUrl" value="/users/find" />
+<form:form modelAttribute="user" method="POST" action="${findUrl}">
+	<table>
+		<tr>
+			<td><form:label path="name">Input name:</form:label></td>
+			<td><form:input path="name"/></td>
+
+			<td><input type="submit" value="Find it"/></td>
+		</tr>
+	</table>
+
+	<br>
+</form:form>
+
 <h3>Users List</h3>
 <c:if test="${!empty listUsers}">
 	<table class="tg">
@@ -143,12 +115,15 @@
 			<td>${user.name}</td>
 			<td>${user.age}</td>
 			<td>${user.isAdmin}</td>
-			<td>${user.createDate}</td>
+			<td>${user.createdDate}</td>
 			<td><a href="<c:url value='/edit/${user.id}' />" >Edit</a></td>
 			<td><a href="<c:url value='/remove/${user.id}' />" >Delete</a></td>
 		</tr>
 	</c:forEach>
 	</table>
+	<c:forEach begin="${startpage}" end="${endpage}" var="p">
+		<a href="/users?page=${p}">${p}</a>
+	</c:forEach>
 </c:if>
 </body>
 </html>
